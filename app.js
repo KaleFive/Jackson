@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  let repo = gh.getRepo("kalefive", "testNode")
-  debugger
-  console.log(req.body)
+  let repoName = req.body.repository.name
+  let branchName = req.body.ref.split("/").pop()
+  let repo = gh.getRepo("kalefive", repoName)
   res.send('Posting World!')
 })
 
