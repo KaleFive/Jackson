@@ -3,21 +3,32 @@ const bodyParser = require("body-parser")
 
 const app = express()
 
-const Octokit = require("octokit");
 const secrets = require("./secrets");
-const gh = Octokit.new({ token: secrets.octokitToken });
-const Git = require("nodegit");
+const github = require("octokit").new({ token: secrets.octokitToken });;
+const nodegit = require("nodegit");
 
-const AWS = require("aws-sdk")
-const s3 = new AWS.S3()
+const s3 = require("./s3")
 
 let bucket = "kalefive.unique.bucket.name"
+let paramKey = "cnnImage.png"
 
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
+  let page = req.query.page
+  s3.pullNewBranchS3Image(bucket, paramKey)
   res.send("Hello World!")
 })
+
+// https://stackoverflow.com/questions/28449363/why-is-this-http-request-not-working-on-aws-lambda
+// set up lambda function to trigger on S3 upload, which will make a http request to this endpoint to run blink-diff
+app.get("/runBlinkDiff", (req, res) => {
+  // let repoName = req.body.repository.name
+  // let branchName = req.body.ref.split("/").pop()
+  s3.pullNewBranchS3Image(bucket, paramKey)
+  res.send("Hello World!")
+})
+
 
 app.get("/clonebranch", (req, res) => {
   // code inside of git.js
@@ -26,7 +37,7 @@ app.get("/clonebranch", (req, res) => {
 app.post("/", (req, res) => {
   let repoName = req.body.repository.name
   let branchName = req.body.ref.split("/").pop()
-  let repo = gh.getRepo("kalefive", repoName)
+  let repo = github.getRepo("kalefive", repoName)
   res.send("Posting World!")
 })
 
