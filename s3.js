@@ -36,23 +36,23 @@ function uploadDiffToS3(bucket, paramKey) {
   let key = "diff/" + paramKey
   let diffPath = "./screenshots/" + key
   console.log("diffpath " + diffPath)
-  fs.readFile(diffPath, function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    let imageStream = fs.createReadStream(diffPath)
-    let params = {
-      Bucket: bucket,
-      Key: key,
-      Body: imageStream,
-      ACL: 'public-read'
-    };
-    return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
+    fs.readFile(diffPath, function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      let imageStream = fs.createReadStream(diffPath)
+      let params = {
+        Bucket: bucket,
+        Key: key,
+        Body: imageStream,
+        ACL: 'public-read'
+      };
       console.log("inside the promise")
       s3.putObject(params, function() {
         console.log("right before resolve")
         resolve()
-      })
+      });
     });
   });
 }

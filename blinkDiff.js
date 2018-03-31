@@ -15,11 +15,11 @@ function run(page) {
   return new Promise(function(resolve, reject) {
     diff.run(function (error, result) {
       if (error) {
-        reject(error)
+        reject("Error inside of blinkDiff promise " + error)
       } else {
-        resolve()
         console.log(diff.hasPassed(result.code) ? "Passed" : "Failed")
         console.log("Found " + result.differences + " differences.")
+        resolve()
       }
     });
   });

@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   // let page = req.query.page
   // s3.pullNewBranchS3Image(bucket, paramKey)
-  res.send("Hello World!")
+  res.send("<img src='https://s3.amazonaws.com/kalefive.unique.bucket.name/diff/cnnImage.png'></img>")
 })
 
 // https://stackoverflow.com/questions/28449363/why-is-this-http-request-not-working-on-aws-lambda
@@ -30,6 +30,8 @@ app.get("/runBlinkDiff", (req, res) => {
       return s3.uploadDiffToS3(bucket, key)
     }).then(function() {
       res.send("Success")
+    }).catch(function(error) {
+      console.log("This is the error " + error)
     });
 })
 
