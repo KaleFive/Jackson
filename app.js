@@ -23,6 +23,8 @@ app.get("/", (req, res) => {
 app.get("/runBlinkDiff", (req, res) => {
   let bucket = req.query.bucket
   let key = req.query.key
+  console.log("bucket: " + bucket)
+  console.log("key: " + key)
   Promise.all([s3.pullNewBranchS3Image(bucket, key), s3.pullMasterS3Image(bucket, key)])
     .then(function() {
       return blinkDiff.run(key)
