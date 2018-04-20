@@ -11,7 +11,7 @@ function testFunction() {
     }).then(function() {
       return s3.uploadDiffToS3(bucket, key)
     }).then(function() {
-      res.send("Success")
+      console.log("Success!")
     }).catch(function(error) {
       console.log("This is the error " + error)
     });
