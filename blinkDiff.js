@@ -25,6 +25,29 @@ function run(page) {
   });
 };
 
+// at this time, it may not be possible because the output here must be a file
+function runBuffer(arrayOfBuffers) {
+  let diff = new blinkDiff({
+    imageA: arrayOfBuffers[0],
+    imageB: arrayOfBuffers[1],
+
+    imageOutputPath: "./screenshots/diff/" + page
+  })
+
+  return new Promise(function(resolve, reject) {
+    diff.run(function (error, result) {
+      if (error) {
+        reject("Error inside of blinkDiff promise " + error)
+      } else {
+        console.log(diff.hasPassed(result.code) ? "Passed" : "Failed")
+        console.log("Found " + result.differences + " differences.")
+        resolve()
+      }
+    });
+  });
+};
+
 module.exports = {
-  "run": run
+  "run": run,
+  "runBuffer": runBuffer
 }
