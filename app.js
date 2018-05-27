@@ -11,11 +11,15 @@ const s3 = require("./s3")
 const blinkDiff = require("./blinkDiff")
 
 app.use(bodyParser.json());
+app.use(express.static('public'))
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
 
 app.get("/", (req, res) => {
   // let page = req.query.page
   // s3.pullNewBranchS3Image(bucket, paramKey)
-  res.send("<img src='https://s3.amazonaws.com/kalefive.unique.bucket.name/diff/cnnImage.png'></img>")
+  // res.send("<img src='https://s3.amazonaws.com/kalefive.unique.bucket.name/master/cnnImage.png'></img>")
+  res.render("index")
 })
 
 // https://stackoverflow.com/questions/28449363/why-is-this-http-request-not-working-on-aws-lambda
