@@ -1,0 +1,19 @@
+.content {
+  width: 1200px;
+  margin: auto
+}
+.row {
+  margin-top: 22px
+}
+.header {
+  text-align: center
+}
+.column {
+  width: 300px;
+  padding: 0px 50px;
+  display: inline-block;
+  vertical-align: middle
+}
+.images .diff {
+  height: 700px;
+}
