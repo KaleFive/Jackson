@@ -7,9 +7,6 @@ const secrets = require("./secrets");
 const github = require("octokit").new({ token: secrets.octokitToken });;
 const nodegit = require("nodegit");
 
-const s3 = require("./s3")
-const blinkDiff = require("./blinkDiff")
-
 app.use(bodyParser.json());
 app.use(express.static('public'))
 app.set('views', __dirname + '/views');
@@ -21,26 +18,6 @@ app.get("/", (req, res) => {
   // res.send("<img src='https://s3.amazonaws.com/kalefive.unique.bucket.name/master/cnnImage.png'></img>")
   res.render("index")
 })
-
-// https://stackoverflow.com/questions/28449363/why-is-this-http-request-not-working-on-aws-lambda
-// set up lambda function to trigger on S3 upload, which will make a http request to this endpoint to run blink-diff
-app.get("/runBlinkDiff", (req, res) => {
-  let bucket = req.query.bucket
-  let key = req.query.key
-  console.log("bucket: " + bucket)
-  console.log("key: " + key)
-  Promise.all([s3.pullNewBranchS3Image(bucket, key), s3.pullMasterS3Image(bucket, key)])
-    .then(function() {
-      return blinkDiff.run(key)
-    }).then(function() {
-      return s3.uploadDiffToS3(bucket, key)
-    }).then(function() {
-      res.send("Success")
-    }).catch(function(error) {
-      console.log("This is the error " + error)
-    });
-})
-
 
 app.get("/clonebranch", (req, res) => {
   // code inside of git.js
