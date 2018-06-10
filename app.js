@@ -5,7 +5,6 @@ const app = express()
 
 const secrets = require("./secrets");
 const github = require("octokit").new({ token: secrets.octokitToken });;
-const nodegit = require("nodegit");
 
 app.use(bodyParser.json());
 app.use(express.static('public'))
