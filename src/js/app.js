@@ -7,7 +7,7 @@ const secrets = require("../../secrets");
 const github = require("octokit").new({ token: secrets.octokitToken });;
 
 app.use(bodyParser.json());
-app.use(express.static("public"))
+app.use(express.static("dist"))
 
 app.set("views", __dirname + "../../views");
 app.set("view engine", "jade");
